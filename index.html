@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            text-align: center;
+        }
+        #countdown {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        #link-container {
+            display: none;
+            font-size: 1.5rem;
+        }
+        a {
+            color: #ff4d4d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="countdown">Loading...</div>
+    <div id="link-container">
+        <p>Time is up!</p>
+        <a href="https://godslayer82.github.io/Black-Market-Cases/" target="_blank">Access Link Here</a>
+    </div>
+
+    <script>
+        const targetDate = new Date("2026-08-07T14:10:00+12:00");
+
+        function updateCountdown() {
+            const now = new Date();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                document.getElementById('countdown').style.display = 'none';
+                document.getElementById('link-container').style.display = 'block';
+                clearInterval(timerInterval);
+                return;
+            }
+
+            const totalSeconds = Math.floor(difference / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            if (hours > 0) {
+                document.getElementById('countdown').innerHTML = 
+                    hours + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+            } else {
+                document.getElementById('countdown').innerHTML = 
+                    minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+            }
+        }
+
+        const timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
