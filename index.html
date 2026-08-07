@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown</title>
+    <title>Countdown Timer</title>
+    <link rel="icon" id="favicon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -15,6 +16,7 @@
             background-color: #1a1a1a;
             color: #ffffff;
             text-align: center;
+            flex-direction: column;
         }
         #countdown {
             font-size: 3rem;
@@ -32,6 +34,12 @@
         a:hover {
             text-decoration: underline;
         }
+        .early-release-note {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.9rem;
+            color: #888888;
+        }
     </style>
 </head>
 <body>
@@ -41,6 +49,8 @@
         <p>Time is up!</p>
         <a href="https://godslayer82.github.io/Black-Market-Cases/" target="_blank">Access Link Here</a>
     </div>
+
+    <div class="early-release-note">Note: This is an early release and lots of updates will be coming.</div>
 
     <script>
         const targetDate = new Date("2026-08-07T14:10:00+12:00");
@@ -72,6 +82,13 @@
 
         const timerInterval = setInterval(updateCountdown, 1000);
         updateCountdown();
+
+        const emojis = ['⏱️', '🚀', '💻', '🔒', '📦', '🔥', '⚡', '🎲', '💎', '⭐'];
+        setInterval(() => {
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            const svg = `<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${randomEmoji}</text></svg>`;
+            document.getElementById('favicon').href = `data:image/svg+xml,${svg}`;
+        }, 1000);
     </script>
 </body>
 </html>
