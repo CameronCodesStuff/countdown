@@ -3,92 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown Timer</title>
-    <link rel="icon" id="favicon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
+    <title>Pulse Redesign - Release Estimate & Leaks</title>
     <style>
+        :root {
+            --bg-main: #0b0d14;
+            --bg-sidebar: #10131b;
+            --bg-card: #151821;
+            --border-color: #232733;
+            --accent-purple: #8b5cf6;
+            --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+            --text-main: #f3f4f6;
+            --text-muted: #8b949e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #1a1a1a;
-            color: #ffffff;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background-color: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 36px;
+            max-width: 720px;
+            width: 100%;
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.5);
             text-align: center;
-            flex-direction: column;
         }
-        #countdown {
-            font-size: 3rem;
+
+        .logo-badge {
+            width: 48px;
+            height: 48px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
             font-weight: bold;
+            color: white;
+            margin: 0 auto 16px;
+            box-shadow: 0 0 16px rgba(139, 92, 246, 0.4);
         }
-        #link-container {
-            display: none;
+
+        h1 {
             font-size: 1.5rem;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
-        a {
-            color: #ff4d4d;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .early-release-note {
-            position: absolute;
-            bottom: 20px;
+
+        p.subtitle {
+            color: var(--text-muted);
             font-size: 0.9rem;
-            color: #888888;
+            margin-bottom: 24px;
+        }
+
+        /* Estimate card matching app panels */
+        .estimate-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .estimate-info .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .estimate-info .value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .status-pill {
+            background: rgba(139, 92, 246, 0.15);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Progress Bar Module */
+        .progress-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background-color: var(--bg-main);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            width: 35%;
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+        }
+
+        /* Leaks Section */
+        .leaks-section {
+            text-align: left;
+            margin-top: 24px;
+        }
+
+        .leaks-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .leaks-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .leak-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .leak-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-purple);
+        }
+
+        .leak-card img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .leak-info {
+            padding: 8px;
+            font-size: 0.75rem;
+            color: var(--text-main);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Modal Preview */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 600px) {
+            .leaks-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="countdown">Loading...</div>
-    <div id="link-container">
-        <p>Time is up!</p>
-        <a href="https://godslayer82.github.io/Black-Market-Cases/" target="_blank">Access Link Here</a>
+    <div class="container">
+        <div class="logo-badge">P</div>
+        <h1>Pulse Redesign</h1>
+        <p class="subtitle">The next evolution of your workspace environment.</p>
+
+        <div class="estimate-card">
+            <div class="estimate-info">
+                <span class="label">Target Window</span>
+                <span class="value">~1 Month</span>
+            </div>
+            <div class="status-pill">In Progress</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Development Phase</span>
+                <span>Rough Estimate</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill"></div>
+            </div>
+        </div>
+
+        <div class="leaks-section">
+            <div class="leaks-title">🔒 Early Previews & Leaks</div>
+            <div class="leaks-grid">
+                <div class="leak-card" onclick="openModal('Screenshot 2026-08-24 103029.png')">
+                    <img src="Screenshot 2026-08-24 103029.png" alt="Dev Lounge">
+                    <div class="leak-info">Dev Lounge Panel</div>
+                </div>
+                <div class="leak-card" onclick="openModal('Screenshot 2026-08-24 104138.png')">
+                    <img src="Screenshot 2026-08-24 104138.png" alt="Stories View">
+                    <div class="leak-info">Stories View</div>
+                </div>
+                <div class="leak-card" onclick="openModal('Screenshot 2026-08-24 103736.png')">
+                    <img src="Screenshot 2026-08-24 103736.png" alt="NightShift Overview">
+                    <div class="leak-info">NightShift Overview</div>
+                </div>
+                <div class="leak-card" onclick="openModal('Screenshot 2026-08-24 103348.png')">
+                    <img src="Screenshot 2026-08-24 103348.png" alt="Communities Dashboard">
+                    <div class="leak-info">Communities Dashboard</div>
+                </div>
+                <div class="leak-card" onclick="openModal('Screenshot 2026-08-24 094625.png')">
+                    <img src="Screenshot 2026-08-24 094625.png" alt="Discover Section">
+                    <div class="leak-info">Discover Section</div>
+                </div>
+                <div class="leak-card" onclick="openModal('Screenshot 2026-08-24 094555.png')">
+                    <img src="Screenshot 2026-08-24 094555.png" alt="Navigation Sidebar">
+                    <div class="leak-info">Navigation Sidebar</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="early-release-note">Note: This is an early release and lots of updates will be coming.</div>
+    <!-- Modal Viewer -->
+    <div class="modal" id="imageModal" onclick="closeModal()">
+        <img id="modalImage" src="" alt="Enlarged Leak">
+    </div>
 
     <script>
-        const targetDate = new Date("2026-08-07T14:10:00+12:00");
-
-        function updateCountdown() {
-            const now = new Date();
-            const difference = targetDate - now;
-
-            if (difference <= 0) {
-                document.getElementById('countdown').style.display = 'none';
-                document.getElementById('link-container').style.display = 'block';
-                clearInterval(timerInterval);
-                return;
-            }
-
-            const totalSeconds = Math.floor(difference / 1000);
-            const hours = Math.floor(totalSeconds / 3600);
-            const minutes = Math.floor((totalSeconds % 3600) / 60);
-            const seconds = totalSeconds % 60;
-
-            if (hours > 0) {
-                document.getElementById('countdown').innerHTML = 
-                    hours + ":" + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-            } else {
-                document.getElementById('countdown').innerHTML = 
-                    minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
-            }
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = src;
+            modal.style.display = 'flex';
         }
 
-        const timerInterval = setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        const emojis = ['⏱️', '🚀', '💻', '🔒', '📦', '🔥', '⚡', '🎲', '💎', '⭐'];
-        setInterval(() => {
-            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-            const svg = `<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>${randomEmoji}</text></svg>`;
-            document.getElementById('favicon').href = `data:image/svg+xml,${svg}`;
-        }, 1000);
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
     </script>
+
 </body>
 </html>
